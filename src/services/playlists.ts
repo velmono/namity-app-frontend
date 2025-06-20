@@ -1,5 +1,5 @@
 import { api } from './api';
-import { Playlist, Track } from '../types';
+import { Playlist } from '../types';
 
 export const playlistService = {
   async createPlaylist(title: string, description?: string): Promise<Playlist> {

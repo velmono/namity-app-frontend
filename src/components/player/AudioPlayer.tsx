@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Shuffle, Repeat, ListMusic, Trash2, X } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Repeat, ListMusic, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { usePlayer } from '../../contexts/PlayerContext';
@@ -14,7 +14,6 @@ export const AudioPlayer: React.FC = () => {
     volume,
     currentTime,
     duration,
-    play,
     pause,
     resume,
     setVolume,

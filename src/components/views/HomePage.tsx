@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Music, TrendingUp, Shuffle } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Music, Shuffle } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import { TrackCard } from '../tracks/TrackCard';
 import { Track } from '../../types';
 import { trackService } from '../../services/tracks';

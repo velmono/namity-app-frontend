@@ -84,7 +84,7 @@ export const ProfileView: React.FC = () => {
         {tracks.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {tracks.map((track) => (
-              <TrackCard key={track.id} track={track} />
+              <TrackCard key={track.id} track={track as any} />
             ))}
           </div>
         ) : (
@@ -95,4 +95,4 @@ export const ProfileView: React.FC = () => {
       </div>
     </div>
   );
-}; 
+};

@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
-import { Search, User, Music, LogOut, Settings } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Search, User, LogOut, Settings } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { useAuth } from '../../contexts/AuthContext';
-import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
@@ -41,7 +32,6 @@ const Logo = () => (
 
 export const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery }) => {
   const { user, logout } = useAuth();
-  const { toast } = useToast();
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 

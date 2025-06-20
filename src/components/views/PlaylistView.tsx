@@ -77,7 +77,7 @@ export const PlaylistView: React.FC = () => {
               className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition mb-2"
               onClick={() => setQueue(tracks)}
             >
-              Слушать плейлист
+              Play Playlist
             </button>
           )}
         </CardContent>

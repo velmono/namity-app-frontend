@@ -17,10 +17,10 @@ export const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
       if (isPlaying) {
         pause();
       } else {
-        play(track);
+        play(track as any);
       }
     } else {
-      play(track);
+      play(track as any);
     }
   };
 
@@ -58,4 +58,4 @@ export const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
       </div>
     </div>
   );
-}; 
+};
