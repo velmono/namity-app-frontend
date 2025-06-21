@@ -6,6 +6,7 @@ import axios from 'axios';
 import { API_URL } from '@/config';
 import { TrackCard } from '@/components/tracks/TrackCard';
 import { Track } from '@/types/index';
+import { useTranslation } from 'react-i18next';
 
 interface Profile {
   user_id: string;
@@ -22,6 +23,7 @@ export const ProfileView: React.FC = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +56,7 @@ export const ProfileView: React.FC = () => {
   if (!profile) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-white text-xl">Profile not found</div>
+        <div className="text-white text-xl">{t('profile_not_found')}</div>
       </div>
     );
   }
@@ -70,17 +72,17 @@ export const ProfileView: React.FC = () => {
           </AvatarFallback>
         </Avatar>
         <div>
-          <h1 className="text-3xl font-bold text-white">{profile.display_name || 'Anonymous'}</h1>
+          <h1 className="text-3xl font-bold text-white">{profile.display_name || t('anonymous')}</h1>
           {profile.bio && <p className="mt-2 text-gray-400">{profile.bio}</p>}
           <p className="mt-2 text-sm text-gray-500">
-            Member since {new Date(profile.created_at).toLocaleDateString()}
+            {t('member_since', { date: new Intl.DateTimeFormat('ru-RU').format(new Date(profile.created_at)) })}
           </p>
         </div>
       </div>
 
       {/* Tracks Section */}
       <div>
-        <h2 className="text-2xl font-bold text-white mb-4">Uploaded Tracks</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">{t('uploaded_tracks')}</h2>
         {tracks.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {tracks.map((track) => (
@@ -89,7 +91,7 @@ export const ProfileView: React.FC = () => {
           </div>
         ) : (
           <div className="text-center py-8 text-gray-400">
-            No tracks uploaded yet
+            {t('no_tracks_uploaded')}
           </div>
         )}
       </div>

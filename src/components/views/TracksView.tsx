@@ -7,12 +7,14 @@ import { TrackUpload } from '../tracks/TrackUpload';
 import { Track } from '../../types';
 import { trackService } from '../../services/tracks';
 import { useToast } from '../../hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 export const TracksView: React.FC = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [showUpload, setShowUpload] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadTracks();
@@ -26,8 +28,8 @@ export const TracksView: React.FC = () => {
     } catch (error) {
       console.error('Failed to load tracks:', error);
       toast({
-        title: 'Failed to load tracks',
-        description: 'Please try again later',
+        title: t('failed_load_tracks'),
+        description: t('loading'),
         variant: 'destructive',
       });
     } finally {
@@ -45,14 +47,14 @@ export const TracksView: React.FC = () => {
       await trackService.deleteTrack(track.id);
       setTracks(tracks.filter(t => t.id !== track.id));
       toast({
-        title: 'Track deleted',
-        description: 'The track has been removed from your library',
+        title: t('track_deleted'),
+        description: t('track_removed'),
       });
     } catch (error) {
       console.error('Failed to delete track:', error);
       toast({
-        title: 'Failed to delete track',
-        description: 'Please try again',
+        title: t('failed_delete_track'),
+        description: t('loading'),
         variant: 'destructive',
       });
     }
@@ -62,13 +64,13 @@ export const TracksView: React.FC = () => {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-white">Upload Track</h1>
+          <h1 className="text-2xl font-bold text-white">{t('upload_track')}</h1>
           <Button
             variant="outline"
             onClick={() => setShowUpload(false)}
             className="border-gray-600 text-gray-300 hover:text-white"
           >
-            Cancel
+            {t('cancel')}
           </Button>
         </div>
         <TrackUpload onUploadComplete={handleUploadComplete} />
@@ -87,13 +89,13 @@ export const TracksView: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Your Tracks</h1>
+        <h1 className="text-2xl font-bold text-white">{t('your_tracks')}</h1>
         <Button
           onClick={() => setShowUpload(true)}
           className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Upload Track
+          {t('upload_track')}
         </Button>
       </div>
 
@@ -112,16 +114,16 @@ export const TracksView: React.FC = () => {
         <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-12 text-center">
             <Music className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">No tracks yet</h3>
+            <h3 className="text-xl font-semibold text-white mb-2">{t('no_tracks')}</h3>
             <p className="text-gray-400 mb-6">
-              Upload your first track to get started
+              {t('upload_first_track')}
             </p>
             <Button
               onClick={() => setShowUpload(true)}
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Upload Your First Track
+              {t('upload_track')}
             </Button>
           </CardContent>
         </Card>

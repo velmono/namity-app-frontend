@@ -10,6 +10,7 @@ import { Playlist } from '../../types';
 import { playlistService } from '../../services/playlists';
 import { useToast } from '../../hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export const PlaylistsView: React.FC = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -19,6 +20,7 @@ export const PlaylistsView: React.FC = () => {
   const [newPlaylistDescription, setNewPlaylistDescription] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadPlaylists();
@@ -32,8 +34,8 @@ export const PlaylistsView: React.FC = () => {
     } catch (error) {
       console.error('Failed to load playlists:', error);
       toast({
-        title: 'Failed to load playlists',
-        description: 'Please try again later',
+        title: t('failed_load_playlists'),
+        description: t('loading'),
         variant: 'destructive',
       });
     } finally {
@@ -44,7 +46,7 @@ export const PlaylistsView: React.FC = () => {
   const handleCreatePlaylist = async () => {
     if (!newPlaylistTitle.trim()) {
       toast({
-        title: 'Title is required',
+        title: t('title_required'),
         variant: 'destructive',
       });
       return;
@@ -57,14 +59,14 @@ export const PlaylistsView: React.FC = () => {
       setNewPlaylistTitle('');
       setNewPlaylistDescription('');
       toast({
-        title: 'Playlist created',
-        description: 'Your new playlist has been created',
+        title: t('playlist_created'),
+        description: t('playlist_created_desc'),
       });
     } catch (error) {
       console.error('Failed to create playlist:', error);
       toast({
-        title: 'Failed to create playlist',
-        description: 'Please try again',
+        title: t('failed_create_playlist'),
+        description: t('loading'),
         variant: 'destructive',
       });
     }
@@ -81,13 +83,13 @@ export const PlaylistsView: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-white">Your Playlists</h1>
+        <h1 className="text-2xl font-bold text-white">{t('your_playlists')}</h1>
         <Button
           onClick={() => setIsCreateDialogOpen(true)}
           className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Create Playlist
+          {t('create_playlist')}
         </Button>
       </div>
 
@@ -119,14 +121,14 @@ export const PlaylistsView: React.FC = () => {
         <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-12 text-center">
             <ListMusic className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">No playlists yet</h3>
-            <p className="text-gray-400 mb-6">Create your first playlist to get started</p>
+            <h3 className="text-xl font-semibold text-white mb-2">{t('no_playlists')}</h3>
+            <p className="text-gray-400 mb-6">{t('create_first_playlist')}</p>
             <Button
               onClick={() => setIsCreateDialogOpen(true)}
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Create Your First Playlist
+              {t('create_playlist')}
             </Button>
           </CardContent>
         </Card>
@@ -135,27 +137,27 @@ export const PlaylistsView: React.FC = () => {
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
         <DialogContent className="bg-gray-800 border-gray-700">
           <DialogHeader>
-            <DialogTitle className="text-white">Create New Playlist</DialogTitle>
+            <DialogTitle className="text-white">{t('create_playlist')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="title" className="text-white">Title</Label>
+              <Label htmlFor="title" className="text-white">{t('title')}</Label>
               <Input
                 id="title"
                 value={newPlaylistTitle}
                 onChange={(e) => setNewPlaylistTitle(e.target.value)}
                 className="bg-gray-700 border-gray-600 text-white"
-                placeholder="Enter playlist title"
+                placeholder={t('enter_playlist_title')}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description" className="text-white">Description (optional)</Label>
+              <Label htmlFor="description" className="text-white">{t('description_optional')}</Label>
               <Textarea
                 id="description"
                 value={newPlaylistDescription}
                 onChange={(e) => setNewPlaylistDescription(e.target.value)}
                 className="bg-gray-700 border-gray-600 text-white"
-                placeholder="Enter playlist description"
+                placeholder={t('enter_playlist_description')}
               />
             </div>
           </div>
@@ -165,13 +167,13 @@ export const PlaylistsView: React.FC = () => {
               onClick={() => setIsCreateDialogOpen(false)}
               className="text-gray-300 hover:text-white"
             >
-              Cancel
+              {t('cancel')}
             </Button>
             <Button
               onClick={handleCreatePlaylist}
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
             >
-              Create
+              {t('create')}
             </Button>
           </DialogFooter>
         </DialogContent>

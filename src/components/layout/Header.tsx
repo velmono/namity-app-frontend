@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface HeaderProps {
   onSearch: (query: string) => void;
@@ -34,6 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <header className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
@@ -55,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery }) => {
               </div>
               <Input
                 type="text"
-                placeholder="Search tracks, artists, playlists..."
+                placeholder={t('search_placeholder')}
                 className="pl-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-purple-500"
                 value={searchQuery}
                 onChange={(e) => onSearch(e.target.value)}
@@ -89,7 +91,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery }) => {
                     role="menuitem"
                   >
                     <User className="w-4 h-4 mr-2" />
-                    Profile
+                    {t('profile')}
                   </button>
                   <button
                     onClick={() => {
@@ -100,7 +102,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery }) => {
                     role="menuitem"
                   >
                     <Settings className="w-4 h-4 mr-2" />
-                    Settings
+                    {t('settings')}
                   </button>
                   <button
                     onClick={logout}
@@ -108,7 +110,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery }) => {
                     role="menuitem"
                   >
                     <LogOut className="w-4 h-4 mr-2" />
-                    Logout
+                    {t('logout')}
                   </button>
                 </div>
               </div>

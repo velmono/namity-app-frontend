@@ -5,11 +5,13 @@ import { TrackCard } from '../tracks/TrackCard';
 import { Track } from '../../types';
 import { trackService } from '../../services/tracks';
 import { useToast } from '../../hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 export const HomePage: React.FC = () => {
   const [randomTracks, setRandomTracks] = useState<Track[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const loadRandomTracks = async () => {
@@ -49,8 +51,8 @@ export const HomePage: React.FC = () => {
             <Music className="w-8 h-8" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold mb-2">Welcome to NAMITY</h1>
-            <p className="text-white/90">Discover amazing music from artists around the world</p>
+            <h1 className="text-3xl font-bold mb-2">{t('home_banner_title')}</h1>
+            <p className="text-white/90">{t('home_banner_subtitle')}</p>
           </div>
         </div>
       </div>
@@ -75,8 +77,8 @@ export const HomePage: React.FC = () => {
             <div className="flex items-center space-x-3">
               <Shuffle className="w-8 h-8" />
               <div>
-                <h3 className="font-bold text-lg">Discover</h3>
-                <p className="text-white/80">Find new favorites</p>
+                <h3 className="font-bold text-lg">{t('home_discover_title')}</h3>
+                <p className="text-white/80">{t('home_discover_subtitle')}</p>
               </div>
             </div>
           </CardContent>
@@ -87,8 +89,8 @@ export const HomePage: React.FC = () => {
             <div className="flex items-center space-x-3">
               <Music className="w-8 h-8" />
               <div>
-                <h3 className="font-bold text-lg">Your Music</h3>
-                <p className="text-white/80">Personal collection</p>
+                <h3 className="font-bold text-lg">{t('your_music')}</h3>
+                <p className="text-white/80">{t('personal_collection')}</p>
               </div>
             </div>
           </CardContent>
@@ -97,7 +99,7 @@ export const HomePage: React.FC = () => {
 
       {/* Random Tracks */}
       <div>
-        <h2 className="text-2xl font-bold text-white mb-6">Discover New Music</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">{t('discover_new_music')}</h2>
         {randomTracks.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {randomTracks.map((track) => (
@@ -108,10 +110,8 @@ export const HomePage: React.FC = () => {
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-8 text-center">
               <Music className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-400">No tracks available yet</p>
-              <p className="text-gray-500 text-sm mt-2">
-                Be the first to upload some music!
-              </p>
+              <p className="text-gray-400">{t('no_tracks_available')}</p>
+              <p className="text-gray-500 text-sm mt-2">{t('be_first_upload')}</p>
             </CardContent>
           </Card>
         )}

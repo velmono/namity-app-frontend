@@ -3,9 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, Music, PlusCircle, Library } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 export const Sidebar: React.FC = () => {
   const location = useLocation();
+  const { t, i18n } = useTranslation();
 
   const isActive = (path: string) => {
     if (path === '/') {
@@ -15,9 +17,9 @@ export const Sidebar: React.FC = () => {
   };
 
   const navItems = [
-    { path: '/', icon: Home, label: 'Home' },
-    { path: '/tracks', icon: Music, label: 'Tracks' },
-    { path: '/playlists', icon: Library, label: 'Playlists' },
+    { path: '/', icon: Home, label: t('home') },
+    { path: '/tracks', icon: Music, label: t('tracks') },
+    { path: '/playlists', icon: Library, label: t('playlists') },
   ];
 
   return (
@@ -46,9 +48,15 @@ export const Sidebar: React.FC = () => {
             className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
           >
             <PlusCircle className="w-5 h-5 mr-2" />
-            Upload Track
+            {t('upload_track')}
           </Button>
         </Link>
+      </div>
+      <div className="absolute left-0 bottom-0 w-full p-4">
+        <div className="flex gap-2 justify-center">
+          <button onClick={() => i18n.changeLanguage('ru')} className="px-2 py-1 bg-gray-700 text-white rounded">RU</button>
+          <button onClick={() => i18n.changeLanguage('en')} className="px-2 py-1 bg-gray-700 text-white rounded">EN</button>
+        </div>
       </div>
     </aside>
   );

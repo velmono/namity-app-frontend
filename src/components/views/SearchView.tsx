@@ -11,6 +11,7 @@ import { playlistService } from '../../services/playlists';
 import { useToast } from '../../hooks/use-toast';
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useTranslation } from 'react-i18next';
 
 interface SearchViewProps {
   initialQuery?: string;
@@ -23,6 +24,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (query.trim()) {
@@ -56,8 +58,8 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
     } catch (error) {
       console.error('Search failed:', error);
       toast({
-        title: 'Search failed',
-        description: 'Please try again',
+        title: t('search'),
+        description: t('failed_load_tracks'),
         variant: 'destructive',
       });
     } finally {
@@ -78,14 +80,14 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-white">Search</h1>
+        <h1 className="text-2xl font-bold text-white">{t('search')}</h1>
         <div className="relative max-w-2xl">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-gray-400" />
           </div>
           <Input
             type="text"
-            placeholder="Search for tracks, artists, or playlists..."
+            placeholder={t('search_placeholder')}
             className="pl-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-purple-500"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -97,13 +99,13 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
         <Tabs defaultValue="tracks" className="w-full">
           <TabsList className="grid w-full grid-cols-3 bg-gray-800 border-gray-700">
             <TabsTrigger value="tracks" className="text-gray-300 data-[state=active]:text-white">
-              Tracks ({tracks.length})
+              {t('tracks')} ({tracks.length})
             </TabsTrigger>
             <TabsTrigger value="artists" className="text-gray-300 data-[state=active]:text-white">
-              Artists ({users.length})
+              {t('artists')} ({users.length})
             </TabsTrigger>
             <TabsTrigger value="playlists" className="text-gray-300 data-[state=active]:text-white">
-              Playlists ({playlists.length})
+              {t('playlists')} ({playlists.length})
             </TabsTrigger>
           </TabsList>
 
@@ -121,8 +123,8 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
             ) : (
               <EmptyState
                 icon={Music}
-                title="No tracks found"
-                description={`No tracks match "${query}"`}
+                title={t('no_tracks_found')}
+                description={t('no_tracks_match', { query })}
               />
             )}
           </TabsContent>
@@ -163,8 +165,8 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
             ) : (
               <EmptyState
                 icon={User}
-                title="No artists found"
-                description={`No artists match "${query}"`}
+                title={t('no_artists_found')}
+                description={t('no_artists_match', { query })}
               />
             )}
           </TabsContent>
@@ -211,8 +213,8 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
             ) : (
               <EmptyState
                 icon={ListMusic}
-                title="No playlists found"
-                description={`No playlists match "${query}"`}
+                title={t('no_playlists_found')}
+                description={t('no_playlists_match', { query })}
               />
             )}
           </TabsContent>

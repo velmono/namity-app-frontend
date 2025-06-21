@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { trackService } from '../../services/tracks';
 import { useToast } from '../../hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface TrackUploadProps {
   onUploadComplete: () => void;
@@ -17,6 +18,7 @@ export const TrackUpload: React.FC<TrackUploadProps> = ({ onUploadComplete }) =>
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -28,8 +30,8 @@ export const TrackUpload: React.FC<TrackUploadProps> = ({ onUploadComplete }) =>
         }
       } else {
         toast({
-          title: 'Invalid file type',
-          description: 'Please select an audio file',
+          title: t('invalid_file_type'),
+          description: t('select_audio_file'),
           variant: 'destructive',
         });
       }
@@ -44,8 +46,8 @@ export const TrackUpload: React.FC<TrackUploadProps> = ({ onUploadComplete }) =>
     try {
       await trackService.uploadTrack(title.trim(), file, description.trim() || undefined);
       toast({
-        title: 'Track uploaded successfully',
-        description: 'Your track is now available in your library',
+        title: t('track_uploaded_success'),
+        description: t('track_uploaded_desc'),
       });
       setTitle('');
       setDescription('');
@@ -54,8 +56,8 @@ export const TrackUpload: React.FC<TrackUploadProps> = ({ onUploadComplete }) =>
     } catch (error) {
       console.error('Upload failed:', error);
       toast({
-        title: 'Upload failed',
-        description: 'Please try again',
+        title: t('upload_failed'),
+        description: t('try_again'),
         variant: 'destructive',
       });
     } finally {
@@ -72,18 +74,18 @@ export const TrackUpload: React.FC<TrackUploadProps> = ({ onUploadComplete }) =>
     <div className="max-w-2xl mx-auto">
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader>
-          <CardTitle className="text-white">Upload New Track</CardTitle>
+          <CardTitle className="text-white">{t('upload_new_track')}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* File upload */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Audio File</label>
+              <label className="text-sm font-medium text-gray-300">{t('audio_file')}</label>
               {!file ? (
                 <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center relative">
                   <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                  <p className="text-gray-400 mb-2">Click to upload or drag and drop</p>
-                  <p className="text-gray-500 text-sm">MP3, WAV, FLAC, or other audio formats</p>
+                  <p className="text-gray-400 mb-2">{t('click_to_upload')}</p>
+                  <p className="text-gray-500 text-sm">{t('audio_formats')}</p>
                   <input
                     type="file"
                     accept="audio/*"
@@ -114,45 +116,43 @@ export const TrackUpload: React.FC<TrackUploadProps> = ({ onUploadComplete }) =>
                     size="sm"
                     onClick={removeFile}
                     className="text-gray-400 hover:text-white"
+                    aria-label={t('remove_file')}
                   >
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
               )}
             </div>
-
             {/* Title */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Title</label>
+              <label className="text-sm font-medium text-gray-300">{t('title_label')}</label>
               <Input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter track title"
+                placeholder={t('title_placeholder')}
                 className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
                 required
               />
             </div>
-
             {/* Description */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Description (Optional)</label>
+              <label className="text-sm font-medium text-gray-300">{t('description_label')}</label>
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Tell us about your track..."
+                placeholder={t('description_placeholder')}
                 className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 resize-none"
                 rows={3}
               />
             </div>
-
             {/* Submit button */}
             <Button
               type="submit"
               disabled={!file || !title.trim() || isUploading}
               className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
             >
-              {isUploading ? 'Uploading...' : 'Upload Track'}
+              {isUploading ? t('uploading') : t('upload_track_btn')}
             </Button>
           </form>
         </CardContent>

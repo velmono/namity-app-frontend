@@ -7,11 +7,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { User, Camera } from 'lucide-react';
 import profileService from '@/services/profileService';
+import { useTranslation } from 'react-i18next';
 
 export const SettingsView: React.FC = () => {
   const { user, updateUser } = useAuth();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   // Profile settings
   const [displayName, setDisplayName] = useState(user?.displayName || '');
@@ -41,39 +43,29 @@ export const SettingsView: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Проверяем, изменился ли slug и не пустой ли он
       const updatedData: { displayName: string; slug?: string } = {
         displayName,
       };
-
-      // Добавляем slug только если он изменился и не пустой
       if (slug && slug !== user?.slug) {
         updatedData.slug = slug;
       }
-
-      // Обновляем профиль
       const updatedProfile = await profileService.updateProfile(updatedData);
-
-      // Если есть новая аватарка, загружаем её
       if (avatarFile) {
         await profileService.uploadAvatar(avatarFile);
       }
-
-      // Обновляем состояние пользователя
       updateUser({
         ...user!,
         displayName: updatedProfile.displayName,
         slug: updatedProfile.slug,
       });
-
       toast({
-        title: 'Profile updated',
-        description: 'Your profile has been successfully updated.',
+        title: t('profile_updated'),
+        description: t('profile_updated_desc'),
       });
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to update profile. Please try again.',
+        title: t('error'),
+        description: t('failed_update_profile'),
         variant: 'destructive',
       });
     } finally {
@@ -85,32 +77,29 @@ export const SettingsView: React.FC = () => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
       toast({
-        title: 'Error',
-        description: 'New passwords do not match.',
+        title: t('error'),
+        description: t('passwords_do_not_match'),
         variant: 'destructive',
       });
       return;
     }
-
     setIsLoading(true);
     try {
       await profileService.updatePassword({
         currentPassword,
         newPassword,
       });
-
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
-
       toast({
-        title: 'Password updated',
-        description: 'Your password has been successfully updated.',
+        title: t('password_updated'),
+        description: t('password_updated_desc'),
       });
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to update password. Please try again.',
+        title: t('error'),
+        description: t('failed_update_password'),
         variant: 'destructive',
       });
     } finally {
@@ -121,15 +110,15 @@ export const SettingsView: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-1 max-w-4xl mx-auto w-full space-y-8 p-6 pb-32">
-        <h1 className="text-3xl font-bold text-white">Settings</h1>
+        <h1 className="text-3xl font-bold text-white">{t('settings_title')}</h1>
 
         {/* Profile Settings */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-white">Profile Settings</h2>
+          <h2 className="text-2xl font-bold text-white">{t('profile_settings')}</h2>
           <form onSubmit={handleProfileUpdate} className="space-y-6">
             <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-xl text-white">Profile Settings</CardTitle>
+                <CardTitle className="text-xl text-white">{t('profile_settings')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-4">
@@ -155,26 +144,26 @@ export const SettingsView: React.FC = () => {
                     </label>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400">Upload a new profile picture</p>
-                    <p className="text-xs text-gray-500">Recommended: Square image, max 2MB</p>
+                    <p className="text-sm text-gray-400">{t('upload_new_avatar')}</p>
+                    <p className="text-xs text-gray-500">{t('avatar_hint')}</p>
                   </div>
                 </div>
 
                 {/* Display Name */}
                 <div className="space-y-2 mt-6">
-                  <label className="text-sm font-medium text-gray-300">Display Name</label>
+                  <label className="text-sm font-medium text-gray-300">{t('display_name')}</label>
                   <Input
                     type="text"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                     className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="Enter your display name"
+                    placeholder={t('display_name_placeholder')}
                   />
                 </div>
 
                 {/* Profile Slug */}
                 <div className="space-y-2 mt-4">
-                  <label className="text-sm font-medium text-gray-300">Profile URL</label>
+                  <label className="text-sm font-medium text-gray-300">{t('profile_url')}</label>
                   <div className="flex items-center space-x-2">
                     <span className="text-gray-400">namity.com/</span>
                     <Input
@@ -182,7 +171,7 @@ export const SettingsView: React.FC = () => {
                       value={slug}
                       onChange={(e) => setSlug(e.target.value)}
                       className="bg-gray-700 border-gray-600 text-white"
-                      placeholder="your-profile-url"
+                      placeholder={t('profile_url_placeholder')}
                     />
                   </div>
                 </div>
@@ -192,7 +181,7 @@ export const SettingsView: React.FC = () => {
                   disabled={isLoading}
                   className="w-full mt-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                 >
-                  {isLoading ? 'Saving...' : 'Save Changes'}
+                  {isLoading ? t('saving') : t('save_changes')}
                 </Button>
               </CardContent>
             </Card>
@@ -201,43 +190,43 @@ export const SettingsView: React.FC = () => {
 
         {/* Password Settings */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-white">Password Settings</h2>
+          <h2 className="text-2xl font-bold text-white">{t('password_settings')}</h2>
           <form onSubmit={handlePasswordUpdate} className="space-y-6">
             <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-xl text-white">Change Password</CardTitle>
+                <CardTitle className="text-xl text-white">{t('change_password')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-300">Current Password</label>
+                  <label className="text-sm font-medium text-gray-300">{t('current_password')}</label>
                   <Input
                     type="password"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="Enter your current password"
+                    placeholder={t('current_password_placeholder')}
                   />
                 </div>
 
                 <div className="space-y-2 mt-4">
-                  <label className="text-sm font-medium text-gray-300">New Password</label>
+                  <label className="text-sm font-medium text-gray-300">{t('new_password')}</label>
                   <Input
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="Enter your new password"
+                    placeholder={t('new_password_placeholder')}
                   />
                 </div>
 
                 <div className="space-y-2 mt-4">
-                  <label className="text-sm font-medium text-gray-300">Confirm New Password</label>
+                  <label className="text-sm font-medium text-gray-300">{t('confirm_new_password')}</label>
                   <Input
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="Confirm your new password"
+                    placeholder={t('confirm_new_password_placeholder')}
                   />
                 </div>
 
@@ -246,7 +235,7 @@ export const SettingsView: React.FC = () => {
                   disabled={isLoading}
                   className="w-full mt-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                 >
-                  {isLoading ? 'Updating...' : 'Update Password'}
+                  {isLoading ? t('updating') : t('update_password')}
                 </Button>
               </CardContent>
             </Card>

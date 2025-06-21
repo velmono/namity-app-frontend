@@ -7,6 +7,7 @@ import { trackService } from '@/services/tracks';
 import { Playlist, Track } from '../../types';
 import { useToast } from '@/hooks/use-toast';
 import { usePlayer } from '../../contexts/PlayerContext';
+import { useTranslation } from 'react-i18next';
 
 export const PlaylistView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +16,7 @@ export const PlaylistView: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const { setQueue } = usePlayer();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!id) return;
@@ -77,7 +79,7 @@ export const PlaylistView: React.FC = () => {
               className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition mb-2"
               onClick={() => setQueue(tracks)}
             >
-              Play Playlist
+              {t('play_playlist')}
             </button>
           )}
         </CardContent>
