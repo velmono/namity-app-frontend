@@ -17,6 +17,7 @@ import { playlistService } from '../../services/playlists';
 import { useToast } from '../../hooks/use-toast';
 import { Link } from 'react-router-dom';
 import { profileService } from '../../services/profiles';
+import { useTranslation } from 'react-i18next';
 
 interface TrackCardProps {
   track: Track;
@@ -33,6 +34,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({
   const { currentTrack, isPlaying, play, addToQueue } = usePlayer();
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const { toast } = useToast();
+  const { t } = useTranslation();
   const isCurrentTrack = currentTrack?.id === track.id;
   const [author, setAuthor] = useState<{ displayName?: string; slug: string } | null>(null);
 
@@ -171,7 +173,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({
                 <DropdownMenuContent align="end">
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger className="w-full text-left bg-gray-800 text-white hover:bg-gray-700 px-3 py-2 rounded-md flex items-center gap-2">
-                      <Plus className="w-4 h-4 mr-1 text-purple-400" /> Add to Playlist
+                      <Plus className="w-4 h-4 mr-1 text-purple-400" /> {t('add_to_playlist')}
                     </DropdownMenuSubTrigger>
                     <DropdownMenuSubContent className="bg-gray-800 text-white p-1 min-w-[200px]">
                       {playlists.length === 0 ? (

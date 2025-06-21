@@ -100,5 +100,6 @@
   "track_uploaded_success": "Track uploaded successfully",
   "track_uploaded_desc": "Your track is now available in your library",
   "upload_failed": "Upload failed",
-  "try_again": "Please try again"
+  "try_again": "Please try again",
+  "add_to_playlist": "Add to Playlist"
 }
