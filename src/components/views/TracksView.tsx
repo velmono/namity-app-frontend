@@ -97,9 +97,9 @@ export const TracksView: React.FC = () => {
         </Button>
       </div>
 
-      {tracks.length > 0 ? (
+      {Array.isArray(tracks) && tracks.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {tracks.map((track) => (
+          {(Array.isArray(tracks) ? tracks : []).map((track) => (
             <TrackCard
               key={track.id}
               track={track}

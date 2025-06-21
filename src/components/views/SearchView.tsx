@@ -112,9 +112,9 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
               <div className="flex items-center justify-center h-32">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
               </div>
-            ) : tracks.length > 0 ? (
+            ) : (Array.isArray(tracks) && tracks.length > 0) ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                {tracks.map((track) => (
+                {(Array.isArray(tracks) ? tracks : []).map((track) => (
                   <TrackCard key={track.id} track={track} showActions={false} />
                 ))}
               </div>
@@ -132,9 +132,9 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
               <div className="flex items-center justify-center h-32">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
               </div>
-            ) : users.length > 0 ? (
+            ) : (Array.isArray(users) && users.length > 0) ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {users.map((user) => (
+                {(Array.isArray(users) ? users : []).map((user) => (
                   <Card key={user.user_id} className="bg-gray-800 border-gray-700">
                     <CardContent className="p-6">
                       <div className="flex items-center space-x-4">
@@ -174,9 +174,9 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
               <div className="flex items-center justify-center h-32">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
               </div>
-            ) : playlists.length > 0 ? (
+            ) : (Array.isArray(playlists) && playlists.length > 0) ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {playlists.map((playlist) => (
+                {(Array.isArray(playlists) ? playlists : []).map((playlist) => (
                   <Card key={playlist.id} className="bg-gray-800 border-gray-700 hover:ring-2 hover:ring-purple-500 transition">
                     <Link to={`/playlists/${playlist.id}`} className="block">
                       <CardContent className="p-6">
@@ -188,7 +188,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
                             <h3 className="text-white font-medium truncate">{playlist.title}</h3>
                             {/* Найти владельца плейлиста среди users */}
                             {(() => {
-                              const owner = users.find(u => u.user_id === playlist.user_id);
+                              const owner = (Array.isArray(users) ? users : []).find(u => u.user_id === playlist.user_id);
                               if (owner) {
                                 return (
                                   <Link to={`/profile/${owner.slug}`} className="text-gray-400 text-sm truncate hover:underline">
@@ -217,13 +217,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ initialQuery = '' }) => 
             )}
           </TabsContent>
         </Tabs>
-      ) : (
-        <EmptyState
-          icon={Search}
-          title="Start searching"
-          description="Enter a search term to find tracks, artists, and playlists"
-        />
-      )}
+      ) : null}
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { User } from 'lucide-react';
 import axios from 'axios';
 import { API_URL } from '@/config';
 import { TrackCard } from '@/components/tracks/TrackCard';
-import { Track } from '@/types/track';
+import { Track } from '@/types/index';
 
 interface Profile {
   user_id: string;

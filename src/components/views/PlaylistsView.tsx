@@ -91,9 +91,9 @@ export const PlaylistsView: React.FC = () => {
         </Button>
       </div>
 
-      {playlists.length > 0 ? (
+      {Array.isArray(playlists) && playlists.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {playlists.map((playlist) => (
+          {(Array.isArray(playlists) ? playlists : []).map((playlist) => (
             <Card
               key={playlist.id}
               className="bg-gray-800 border-gray-700 cursor-pointer hover:bg-gray-700 transition-colors"
@@ -178,4 +178,4 @@ export const PlaylistsView: React.FC = () => {
       </Dialog>
     </div>
   );
-}; 
+};

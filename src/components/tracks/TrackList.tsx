@@ -1,5 +1,5 @@
 import React from 'react';
-import { Track } from '@/types/track';
+import { Track } from '@/types/index';
 import { TrackItem } from './TrackItem';
 
 interface TrackListProps {
@@ -14,4 +14,4 @@ export const TrackList: React.FC<TrackListProps> = ({ tracks }) => {
       ))}
     </div>
   );
-}; 
+};

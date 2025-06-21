@@ -1,6 +1,10 @@
 import { api } from './api';
 import { Playlist } from '../types';
 
+function ensureArray<T>(data: any): T[] {
+  return Array.isArray(data) ? data : [];
+}
+
 export const playlistService = {
   async createPlaylist(title: string, description?: string): Promise<Playlist> {
     return api.post<Playlist>('/playlists/', {
@@ -10,7 +14,8 @@ export const playlistService = {
   },
 
   async getMyPlaylists(): Promise<Playlist[]> {
-    return api.get<Playlist[]>('/playlists/');
+    const data = await api.get<Playlist[]>('/playlists/');
+    return ensureArray<Playlist>(data);
   },
 
   async updatePlaylist(playlistId: string, data: { title?: string; description?: string }): Promise<Playlist> {
@@ -30,7 +35,8 @@ export const playlistService = {
   },
 
   async getPlaylistTracks(playlistId: string): Promise<{ playlist_id: string; track_id: string }[]> {
-    return api.get<{ playlist_id: string; track_id: string }[]>(`/playlists/${playlistId}/tracks`);
+    const data = await api.get<{ playlist_id: string; track_id: string }[]>(`/playlists/${playlistId}/tracks`);
+    return ensureArray<{ playlist_id: string; track_id: string }>(data);
   },
 
   async searchPlaylists(query: string, limit = 10, offset = 0): Promise<Playlist[]> {
@@ -39,7 +45,8 @@ export const playlistService = {
       limit: limit.toString(),
       offset: offset.toString(),
     });
-    return api.get<Playlist[]>(`/playlists/search?${params}`);
+    const data = await api.get<Playlist[]>(`/playlists/search?${params}`);
+    return ensureArray<Playlist>(data);
   },
 
   async getPlaylistById(playlistId: string): Promise<Playlist> {

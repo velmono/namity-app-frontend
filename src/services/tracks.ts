@@ -1,6 +1,10 @@
 import { api } from './api';
 import { Track } from '../types';
 
+function ensureArray<T>(data: any): T[] {
+  return Array.isArray(data) ? data : [];
+}
+
 export const trackService = {
   async uploadTrack(title: string, file: File, description?: string): Promise<Track> {
     const formData = new FormData();
@@ -13,7 +17,8 @@ export const trackService = {
   },
 
   async getMyTracks(): Promise<Track[]> {
-    return api.get<Track[]>('/tracks/');
+    const data = await api.get<Track[]>('/tracks/');
+    return ensureArray<Track>(data);
   },
 
   async searchTracks(query: string, limit = 10, offset = 0): Promise<Track[]> {
@@ -22,7 +27,8 @@ export const trackService = {
       limit: limit.toString(),
       offset: offset.toString(),
     });
-    return api.get<Track[]>(`/tracks/search?${params}`);
+    const data = await api.get<Track[]>(`/tracks/search?${params}`);
+    return ensureArray<Track>(data);
   },
 
   async getRandomTracks(limit = 10, offset = 0): Promise<Track[]> {
@@ -30,7 +36,8 @@ export const trackService = {
       limit: limit.toString(),
       offset: offset.toString(),
     });
-    return api.get<Track[]>(`/tracks/random?${params}`);
+    const data = await api.get<Track[]>(`/tracks/random?${params}`);
+    return ensureArray<Track>(data);
   },
 
   async getTrack(trackId: string): Promise<Track> {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Track } from '@/types/track';
+import { Track } from '@/types/index';
 import { Play, Pause } from 'lucide-react';
 import { usePlayer } from '@/contexts/PlayerContext';
 
@@ -24,12 +24,6 @@ export const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
     }
   };
 
-  const formatDuration = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
   return (
     <div
       className="flex items-center space-x-4 p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
@@ -51,11 +45,11 @@ export const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
       </div>
       <div className="flex-1">
         <h3 className="text-white font-medium">{track.title}</h3>
-        <p className="text-gray-400 text-sm">{track.artist}</p>
+        {/* <p className="text-gray-400 text-sm">{track.artist}</p> */}
       </div>
-      <div className="text-gray-400 text-sm">
+      {/* <div className="text-gray-400 text-sm">
         {formatDuration(track.duration)}
-      </div>
+      </div> */}
     </div>
   );
 };
