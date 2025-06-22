@@ -116,5 +116,32 @@
   "playlist_deleted": "Playlist deleted",
   "playlist_deleted_desc": "The playlist has been successfully deleted.",
   "failed_delete_playlist": "Failed to delete playlist. Please try again.",
-  "edit": "Edit"
+  "edit": "Edit",
+  "auth": {
+    "login_title": "Sign in to your account",
+    "register_title": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "login": "Sign in",
+    "register": "Sign up",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "to_register": "Sign up",
+    "to_login": "Sign in",
+    "login_success": "Welcome back!",
+    "login_success_desc": "You have successfully logged in.",
+    "login_failed": "Login failed",
+    "login_failed_desc": "Please check your credentials and try again.",
+    "register_success": "Registration successful!",
+    "register_success_desc": "You can now log in with your credentials.",
+    "register_failed": "Registration failed",
+    "register_failed_desc": "Please try again with different credentials.",
+    "signing_in": "Signing in...",
+    "creating_account": "Creating account..."
+  },
+  "edit_track": "Edit track",
+  "edit_track_desc": "Edit the title and description of the track",
+  "track_updated": "Track updated",
+  "track_updated_desc": "The track has been successfully updated.",
+  "failed_update_track": "Failed to update track. Please try again."
 }

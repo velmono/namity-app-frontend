@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
+import { useTranslation } from 'react-i18next';
 
 const Logo = () => (
   <svg width="64" height="64" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
@@ -24,12 +25,13 @@ const Logo = () => (
 
 export const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const { i18n } = useTranslation();
 
   const toggleMode = () => setIsLogin(!isLogin);
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-      <div className="flex flex-col min-w-[350px] max-w-[420px] min-h-[500px] space-y-8 bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 rounded-2xl shadow-xl p-8">
+      <div className="flex flex-col min-w-[350px] max-w-[420px] min-h-[500px] space-y-8 bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 rounded-2xl shadow-xl p-8 relative">
         {/* Logo */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
@@ -45,6 +47,11 @@ export const AuthPage: React.FC = () => {
         ) : (
           <RegisterForm onToggleMode={toggleMode} />
         )}
+        {/* Переключатель языка слева снизу */}
+        <div className="absolute left-4 bottom-4 flex gap-2">
+          <button onClick={() => i18n.changeLanguage('ru')} className="px-2 py-1 bg-gray-700 text-white rounded">RU</button>
+          <button onClick={() => i18n.changeLanguage('en')} className="px-2 py-1 bg-gray-700 text-white rounded">EN</button>
+        </div>
       </div>
     </div>
   );

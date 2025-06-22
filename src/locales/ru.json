@@ -116,5 +116,32 @@
   "playlist_deleted": "Плейлист удалён",
   "playlist_deleted_desc": "Плейлист был успешно удалён.",
   "failed_delete_playlist": "Не удалось удалить плейлист. Пожалуйста, попробуйте ещё раз.",
-  "edit": "Редактировать"
+  "edit": "Редактировать",
+  "auth": {
+    "login_title": "Вход в аккаунт",
+    "register_title": "Регистрация",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "login": "Войти",
+    "register": "Зарегистрироваться",
+    "no_account": "Нет аккаунта?",
+    "have_account": "Уже есть аккаунт?",
+    "to_register": "Зарегистрироваться",
+    "to_login": "Войти",
+    "login_success": "Добро пожаловать!",
+    "login_success_desc": "Вы успешно вошли в систему.",
+    "login_failed": "Ошибка входа",
+    "login_failed_desc": "Проверьте данные и попробуйте снова.",
+    "register_success": "Регистрация успешна!",
+    "register_success_desc": "Теперь вы можете войти в систему.",
+    "register_failed": "Ошибка регистрации",
+    "register_failed_desc": "Попробуйте другие данные.",
+    "signing_in": "Вход...",
+    "creating_account": "Создание аккаунта..."
+  },
+  "edit_track": "Редактировать трек",
+  "edit_track_desc": "Измените название и описание трека",
+  "track_updated": "Трек обновлён",
+  "track_updated_desc": "Трек успешно обновлён.",
+  "failed_update_track": "Не удалось обновить трек. Пожалуйста, попробуйте ещё раз."
 }

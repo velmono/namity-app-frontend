@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface LoginFormProps {
   onToggleMode: () => void;
@@ -15,6 +16,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,14 +25,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
     try {
       await login(email, password);
       toast({
-        title: 'Welcome back!',
-        description: 'You have successfully logged in.',
+        title: t('auth.login_success'),
+        description: t('auth.login_success_desc'),
       });
     } catch (error) {
       console.error('Login failed:', error);
       toast({
-        title: 'Login failed',
-        description: 'Please check your credentials and try again.',
+        title: t('auth.login_failed'),
+        description: t('auth.login_failed_desc'),
         variant: 'destructive',
       });
     } finally {
@@ -41,28 +43,28 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
   return (
     <Card className="w-full max-w-md bg-gray-800 border-gray-700">
       <CardHeader>
-        <CardTitle className="text-2xl text-center text-white">Welcome Back</CardTitle>
+        <CardTitle className="text-2xl text-center text-white">{t('auth.login_title')}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-300">Email</label>
+            <label className="text-sm font-medium text-gray-300">{t('auth.email')}</label>
             <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder={t('auth.email')}
               className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
               required
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-300">Password</label>
+            <label className="text-sm font-medium text-gray-300">{t('auth.password')}</label>
             <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
+              placeholder={t('auth.password')}
               className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
               required
             />
@@ -72,17 +74,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
             disabled={isLoading}
             className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
           >
-            {isLoading ? 'Signing in...' : 'Sign in'}
+            {isLoading ? t('auth.signing_in') : t('auth.login')}
           </Button>
         </form>
         <div className="mt-4 text-center">
           <p className="text-gray-400">
-            Don't have an account?{' '}
+            {t('auth.no_account')} {' '}
             <button
               onClick={onToggleMode}
               className="text-purple-400 hover:text-purple-300 font-medium"
             >
-              Sign up
+              {t('auth.to_register')}
             </button>
           </p>
         </div>

@@ -18,6 +18,11 @@ import { useToast } from '../../hooks/use-toast';
 import { Link } from 'react-router-dom';
 import { profileService } from '../../services/profiles';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../contexts/AuthContext';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 interface TrackCardProps {
   track: Track;
@@ -35,8 +40,12 @@ export const TrackCard: React.FC<TrackCardProps> = ({
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { user } = useAuth();
   const isCurrentTrack = currentTrack?.id === track.id;
   const [author, setAuthor] = useState<{ displayName?: string; slug: string } | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editTitle, setEditTitle] = useState(track.title);
+  const [editDescription, setEditDescription] = useState(track.description || '');
 
   useEffect(() => {
     profileService.getProfileByUserId(track.user_id)
@@ -101,6 +110,24 @@ export const TrackCard: React.FC<TrackCardProps> = ({
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  const handleEdit = () => {
+    setEditTitle(track.title);
+    setEditDescription(track.description || '');
+    setIsEditDialogOpen(true);
+  };
+
+  const handleEditSave = async () => {
+    try {
+      await import('../../services/tracks').then(({ trackService }) =>
+        trackService.updateTrack(track.id, { title: editTitle, description: editDescription })
+      );
+      setIsEditDialogOpen(false);
+      toast({ title: t('track_updated'), description: t('track_updated_desc') });
+    } catch {
+      toast({ title: t('error'), description: t('failed_update_track'), variant: 'destructive' });
+    }
   };
 
   return (
@@ -195,6 +222,12 @@ export const TrackCard: React.FC<TrackCardProps> = ({
                       )}
                     </DropdownMenuSubContent>
                   </DropdownMenuSub>
+                  {/* Кнопка редактирования только для владельца */}
+                  {user && user.user_id === track.user_id && (
+                    <DropdownMenuItem onClick={handleEdit} className="text-blue-400">
+                      {t('edit_track')}
+                    </DropdownMenuItem>
+                  )}
                   {onDelete && (
                     <DropdownMenuItem onClick={() => onDelete(track)} className="text-red-400" aria-label={t('delete')}>
                       {t('delete')}
@@ -206,6 +239,27 @@ export const TrackCard: React.FC<TrackCardProps> = ({
           </div>
         </div>
       </CardContent>
+
+      {/* Модальное окно редактирования трека */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="bg-gray-800 border border-gray-700 rounded-lg p-6 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-white mb-2">{t('edit_track')}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Label className="text-white">{t('title')}</Label>
+            <Input value={editTitle} onChange={e => setEditTitle(e.target.value)} className="bg-gray-700 border-gray-600 text-white" />
+            <Label className="text-white">{t('description_optional')}</Label>
+            <Textarea value={editDescription} onChange={e => setEditDescription(e.target.value)} className="bg-gray-700 border-gray-600 text-white" />
+          </div>
+          <DialogFooter className="mt-6 flex gap-2 justify-end">
+            <Button onClick={handleEditSave} className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">{t('save')}</Button>
+            <DialogClose asChild>
+              <Button variant="secondary" className="bg-gray-700 text-white">{t('cancel')}</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };
