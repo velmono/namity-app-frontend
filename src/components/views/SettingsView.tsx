@@ -18,6 +18,7 @@ export const SettingsView: React.FC = () => {
   // Profile settings
   const [displayName, setDisplayName] = useState(user?.displayName || '');
   const [slug, setSlug] = useState(user?.slug || '');
+  const [bio, setBio] = useState(user?.bio || '');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
@@ -25,6 +26,14 @@ export const SettingsView: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  React.useEffect(() => {
+    if (user) {
+      setDisplayName(user.displayName || user.username || '');
+      setSlug(user.slug || '');
+      setBio(user.bio || '');
+    }
+  }, [user]);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -43,11 +52,12 @@ export const SettingsView: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const updatedData: { displayName: string; slug?: string } = {
+      const updatedData: { displayName: string; profileSlug?: string; bio?: string } = {
         displayName,
+        bio,
       };
       if (slug && slug !== user?.slug) {
-        updatedData.slug = slug;
+        updatedData.profileSlug = slug;
       }
       const updatedProfile = await profileService.updateProfile(updatedData);
       if (avatarFile) {
@@ -57,6 +67,7 @@ export const SettingsView: React.FC = () => {
         ...user!,
         displayName: updatedProfile.displayName,
         slug: updatedProfile.slug,
+        bio: updatedProfile.bio,
       });
       toast({
         title: t('profile_updated'),
@@ -174,6 +185,18 @@ export const SettingsView: React.FC = () => {
                       placeholder={t('profile_url_placeholder')}
                     />
                   </div>
+                </div>
+
+                {/* Bio */}
+                <div className="space-y-2 mt-4">
+                  <label className="text-sm font-medium text-gray-300">{t('bio_label')}</label>
+                  <Input
+                    type="text"
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    placeholder={t('bio_placeholder')}
+                  />
                 </div>
 
                 <Button

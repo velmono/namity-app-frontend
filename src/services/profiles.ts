@@ -3,7 +3,12 @@ import { User } from '../types';
 
 export const profileService = {
   async getMyProfile(): Promise<User> {
-    return api.get<User>('/profiles/me');
+    const profile = await api.get<any>('/profiles/me');
+    return {
+      ...profile,
+      displayName: profile.display_name ?? profile.displayName ?? profile.username,
+      avatar_url: profile.avatar_url ?? profile.avatarUrl,
+    };
   },
 
   async updateProfile(data: Partial<User>): Promise<User> {

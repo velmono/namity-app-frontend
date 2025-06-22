@@ -5,12 +5,14 @@ const profileService = {
   async updateProfile(data: {
     displayName?: string;
     profileSlug?: string;
+    bio?: string;
   }) {
     const response = await axios.put(
       `${API_URL}/api/profiles/me`,
       {
         display_name: data.displayName,
         slug: data.profileSlug,
+        bio: data.bio,
       },
       {
         withCredentials: true,
@@ -57,4 +59,4 @@ const profileService = {
   },
 };
 
-export default profileService; 
+export default profileService;
