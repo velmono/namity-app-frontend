@@ -59,6 +59,15 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, [queue, currentIndex]);
 
+  // --- refs для актуальных значений ---
+  const queueRef = useRef(queue);
+  const currentIndexRef = useRef(currentIndex);
+  const isPlayingRef = useRef(isPlaying);
+
+  useEffect(() => { queueRef.current = queue; }, [queue]);
+  useEffect(() => { currentIndexRef.current = currentIndex; }, [currentIndex]);
+  useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
+
   // Инициализация audio
   useEffect(() => {
     if (!audioRef.current) {
@@ -72,7 +81,17 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         audio.currentTime = 0;
         audio.play();
       } else {
-        nextTrack();
+        // Используем актуальные значения из ref
+        const queue = queueRef.current;
+        const idx = currentIndexRef.current;
+        if (queue.length === 0) return;
+        if (idx + 1 < queue.length) {
+          setCurrentIndex(idx + 1);
+          setIsPlaying(true);
+        } else {
+          setIsPlaying(false);
+          // Не сбрасываем индекс на 0, оставляем на последнем треке
+        }
       }
     };
     audio.addEventListener('timeupdate', handleTimeUpdate);
@@ -153,8 +172,10 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
+  // nextTrack теперь использует ref
   const nextTrack = () => {
     setCurrentIndex(prevIndex => {
+      const queue = queueRef.current;
       if (queue.length === 0) {
         setIsPlaying(false);
         setCurrentTrack(null);
@@ -166,7 +187,8 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       } else {
         setIsPlaying(false);
         setCurrentTrack(null);
-        return 0;
+        // Не сбрасываем индекс на 0, оставляем на последнем треке
+        return prevIndex;
       }
     });
   };
