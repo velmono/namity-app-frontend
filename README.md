@@ -5,25 +5,26 @@
 ## Быстрый старт
 
 1. Установить зависимости:
-   ```npm install
+   ```
+   npm install
    ```
 
 2. Запустить проект в режиме разработки:
    ```
-npm run dev
+   npm run dev
    ```
    Проект будет доступен по адресу http://localhost:5173
 
 3. Собрать проект для продакшена:
    ```
-npm run build
+   npm run build
    ```
    Готовые файлы появятся в папке `dist`.
 
 4. Запустить собранный фронтенд локально:
    ```
-npm install -g serve
-serve -s dist -l 5173
+   npm install -g serve
+   serve -s dist -l 5173
    ```
 
 ## Структура проекта
