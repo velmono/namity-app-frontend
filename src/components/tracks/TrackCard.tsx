@@ -196,8 +196,8 @@ export const TrackCard: React.FC<TrackCardProps> = ({
                     </DropdownMenuSubContent>
                   </DropdownMenuSub>
                   {onDelete && (
-                    <DropdownMenuItem onClick={() => onDelete(track)} className="text-red-400">
-                      Delete
+                    <DropdownMenuItem onClick={() => onDelete(track)} className="text-red-400" aria-label={t('delete')}>
+                      {t('delete')}
                     </DropdownMenuItem>
                   )}
                 </DropdownMenuContent>
